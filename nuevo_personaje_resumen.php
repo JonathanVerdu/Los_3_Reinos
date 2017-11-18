@@ -145,7 +145,6 @@
                 <span class='letraMuyGrande negrita'><?php echo "$nombre $apellido"; ?></span><br />
                 <!-- Clase -->
                 <span class="letraGrande"><?php echo "$clase" ?></span><br /><br />
-                <!-- Datos genéricos del personaje -->
               </div>
 
               <div id="atributos">

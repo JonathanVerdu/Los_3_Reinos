@@ -33,17 +33,59 @@
           // Obtener valores de base de datos en función del nombre del personaje
           var nombre = $(this).val();
 
-          $.ajax(
-          {
-            data: {"nombre" : nombre, "prueba" : "prueba"}, 
-            type: "POST", 
-            dataType: "json",
-            url: "http://los3reinos.freeoda.com/extra/obtener_datos_personaje.php" 
-          })
-              .done(function(json){
-                // Pintar con los datos obtenidos la hoja de personaje dentro del div "ficha_personaje"
-                alert(json.nombre+" y "+json.prueba);
-              });
+          if(nombre != "nada"){
+
+            $.ajax(
+            {
+              data: {"nombre" : nombre, "prueba" : "prueba"}, 
+              type: "POST", 
+              dataType: "json",
+              url: "http://los3reinos.freeoda.com/extra/obtener_datos_personaje.php" 
+            })
+
+            .done(function(json){
+
+              // Pintar con los datos obtenidos la hoja de personaje dentro del div "ficha_personaje"
+
+              // --- Borrar lo anterior ---
+              $("#ficha_personaje").html(" ");
+
+              // --- Nombre y clase---
+              $("#ficha_personaje").append('<div id="datos_generales"><span class="letraMuyGrande negrita">'+json.nombre+'</span><br /><span class="letraGrande">'+json.clase+'</span><br /><br /></div>');
+
+              // --- Los Atributos ----
+              $("#ficha_personaje").append('<div id="atributos"><span class="negrita letraGrande margenDerechoPeque">FU: <span class="sinNegrita">'+json.fuerza+'</span></span><span class="negrita letraGrande margenDerechoPeque">DE:<span class="sinNegrita">'+json.destreza+'</span></span><span class="negrita letraGrande margenDerechoPeque">CA:<span class="sinNegrita">'+json.carisma+'</span></span><span class="negrita letraGrande">IN:<span class="sinNegrita">'+json.inteligencia+'</span></span></div><br />');
+
+              // --- Las Habilidades ---
+              if(json.habilidad_nombre.length != 0){
+                $("#ficha_personaje").append('<h3>Habilidades</h3><ul>');
+                for(var i=0; i<json.habilidad_nombre.length; i++){
+                  $("#ficha_personaje").append('<li class="negrita">'+json.habilidad_nombre[i]+': '+json.habilidad_bono[i]+'</li>'); 
+                }
+                $("#ficha_personaje").append('</ul><br />');
+              }
+
+              // --- Las Ventajas ---
+              if(json.mejora.length != 0){
+                $("#ficha_personaje").append('<h3>Mejoras</h3><ul>');
+                for(var i=0; i<json.mejora.length; i++){
+                  $("#ficha_personaje").append('<li class="negrita">'+json.mejora[i]+'</li>'); 
+                }
+                $("#ficha_personaje").append('</ul><br />');
+              }
+
+              // --- Las Tecnicas ---
+              if(json.tecnica.length != 0){
+                $("#ficha_personaje").append('<h3>Tecnicas</h3><ul>');
+                for(var i=0; i<json.tecnica.length; i++){
+                  $("#ficha_personaje").append('<li class="negrita">'+json.tecnica[i]+'</li>'); 
+                }
+                $("#ficha_personaje").append('</ul>');
+              }
+
+            });
+
+        }
 
         });
 
@@ -94,6 +136,7 @@
                   $res = $conexion->query($sql);
                   if($res->num_rows > 0){
                     echo "<select id='seleccion_personaje'>";
+                    echo "<option label='Selecciona un personaje' value='nada' />";
                     while($fila = $res->fetch_array()){
                       echo "<option value'".$fila[0]."'>".$fila[0]."</option>";
                     }
