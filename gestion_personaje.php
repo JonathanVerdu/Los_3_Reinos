@@ -28,6 +28,27 @@
 
       $(document).ready(function(){
 
+        // Comprobamos si estamos viendo esto en un mobil o en un pc
+        var isMobile = window.matchMedia("only screen and (max-width: 760px)");
+
+        // VENTANA QUE TE SIGUE (SOLO VERSION PC) //////////////////////////////////////////////
+          $(function(){
+            var offset = $("#sidebar").offset();
+            var topPadding = 15;
+            $(window).scroll(function() {
+              if($("#sidebar").height() < $(window).height() && $(window).scrollTop() > offset.top){ /* LINEA MODIFICADA PARA NO ANIMAR SI EL SIDEBAR ES MAYOR AL TAMANO DE PANTALLA */
+                $("#sidebar").stop().animate({
+                  marginTop: $(window).scrollTop() - offset.top + topPadding
+                });
+              }else{
+                $("#sidebar").stop().animate({
+                  marginTop: 0
+                });
+              };
+            });
+          });
+        /////////////////////////////////////////////////////////////////////////////////////
+
         $("#seleccion_personaje").change(function(){
 
           // Obtener valores de base de datos en función del nombre del personaje
@@ -58,6 +79,15 @@
 
               // --- Los Datos Personales ---
               $("#ficha_personaje").append('<div id="datos_personales" class="bordeRedondeado"><ul><li>Raza: '+json.raza+'</li><li>Sexo: '+json.sexo+'</li><li>Edad: '+json.edad+'</li><li>Altura: '+json.altura+'</li><li>Peso: '+json.peso+'</li></ul></div><br />'); 
+
+              // --- La Experiencia ---
+              if(!isMobile.matches){
+                $("#sidebar").css("display","block");
+                $("#exp").append(""); // Vaciamos primero la de otro posible personaje
+                $("#exp").append(json.exp);
+              }else{
+                $("#ficha_personaje").append('<div id="sidebar" class="bordeRedondeado">Experiencia: <span id="exp">'+json.exp+'</span></div><br />');
+              }
 
               // --- Las Habilidades ---
               if(json.habilidad_nombre.length != 0){
@@ -108,8 +138,13 @@
 
         <div class="row">
 
-          <div class="col-md-3"></div> 
-          <div class="col-md-6"> 
+          <div class="col-md-1"></div> 
+          <div class="col-md-2">
+            <div id="sidebar" class="bordeRedondeado" style="display: none">
+              Experiencia: <span id="exp"></span>
+            </div>
+          </div> 
+          <div class="col-md-7"> 
 
             <?php
 
@@ -155,7 +190,7 @@
             <br /><br /><div id="ficha_personaje"></div>
 
           </div>
-          <div class="col-md-3"></div>  
+          <div class="col-md-2"></div>  
 
         </div>
 
