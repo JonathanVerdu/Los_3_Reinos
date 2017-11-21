@@ -28,8 +28,6 @@
 	$tabla = $_GET["tabla"];
 	$nombre = $_GET["nombre"];
 
-	echo $nombre;
-
 	$conexion= conectar();
 	$conexion->query("SET NAMES 'utf8'");
 	$sql = "SELECT * FROM $tabla WHERE nombre = '$nombre';";

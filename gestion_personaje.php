@@ -56,11 +56,14 @@
               // --- Los Atributos ----
               $("#ficha_personaje").append('<div id="atributos"><span class="negrita letraGrande margenDerechoPeque">FU: <span class="sinNegrita">'+json.fuerza+'</span></span><span class="negrita letraGrande margenDerechoPeque">DE:<span class="sinNegrita">'+json.destreza+'</span></span><span class="negrita letraGrande margenDerechoPeque">CA:<span class="sinNegrita">'+json.carisma+'</span></span><span class="negrita letraGrande">IN:<span class="sinNegrita">'+json.inteligencia+'</span></span></div><br />');
 
+              // --- Los Datos Personales ---
+              $("#ficha_personaje").append('<div id="datos_personales" class="bordeRedondeado"><ul><li>Raza: '+json.raza+'</li><li>Sexo: '+json.sexo+'</li><li>Edad: '+json.edad+'</li><li>Altura: '+json.altura+'</li><li>Peso: '+json.peso+'</li></ul></div><br />'); 
+
               // --- Las Habilidades ---
               if(json.habilidad_nombre.length != 0){
                 $("#ficha_personaje").append('<h3>Habilidades</h3><ul>');
                 for(var i=0; i<json.habilidad_nombre.length; i++){
-                  $("#ficha_personaje").append('<li class="negrita">'+json.habilidad_nombre[i]+': '+json.habilidad_bono[i]+'</li>'); 
+                  $("#ficha_personaje").append('<li class="negrita"><a href="extra/mostrar_ventana_busqueda.php?tabla=habilidades&nombre='+json.habilidad_nombre[i]+'" target="_blank">'+json.habilidad_nombre[i]+'</a>: '+json.habilidad_bono[i]+'</li>'); 
                 }
                 $("#ficha_personaje").append('</ul><br />');
               }
@@ -69,7 +72,7 @@
               if(json.mejora.length != 0){
                 $("#ficha_personaje").append('<h3>Mejoras</h3><ul>');
                 for(var i=0; i<json.mejora.length; i++){
-                  $("#ficha_personaje").append('<li class="negrita">'+json.mejora[i]+'</li>'); 
+                  $("#ficha_personaje").append('<li class="negrita"><a href="extra/mostrar_ventana_busqueda.php?tabla=mejoras&nombre='+json.mejora[i]+'" target="_blank">'+json.mejora[i]+'</a></li>'); 
                 }
                 $("#ficha_personaje").append('</ul><br />');
               }
@@ -78,7 +81,7 @@
               if(json.tecnica.length != 0){
                 $("#ficha_personaje").append('<h3>Tecnicas</h3><ul>');
                 for(var i=0; i<json.tecnica.length; i++){
-                  $("#ficha_personaje").append('<li class="negrita">'+json.tecnica[i]+'</li>'); 
+                  $("#ficha_personaje").append('<li class="negrita"><a href="extra/mostrar_ventana_busqueda.php?tabla=tecnicas&nombre='+json.tecnica[i]+'" target="_blank">'+json.tecnica[i]+'</a></li>'); 
                 }
                 $("#ficha_personaje").append('</ul>');
               }

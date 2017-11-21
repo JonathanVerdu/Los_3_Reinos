@@ -29,6 +29,7 @@
 
   $jsondata["nombre"] = $nombre;
   $jsondata["edad"] = $edad;
+  $jsondata["altura"] = $altura;
   $jsondata["peso"] = $peso;
   $jsondata["raza"] = $raza;
   $jsondata["sexo"] = $sexo;
