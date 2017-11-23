@@ -32,21 +32,21 @@
         var isMobile = window.matchMedia("only screen and (max-width: 760px)");
 
         // VENTANA QUE TE SIGUE (SOLO VERSION PC) //////////////////////////////////////////////
-          $(function(){
-            var offset = $("#sidebar").offset();
-            var topPadding = 15;
-            $(window).scroll(function() {
-              if($("#sidebar").height() < $(window).height() && $(window).scrollTop() > offset.top){ /* LINEA MODIFICADA PARA NO ANIMAR SI EL SIDEBAR ES MAYOR AL TAMANO DE PANTALLA */
-                $("#sidebar").stop().animate({
-                  marginTop: $(window).scrollTop() - offset.top + topPadding
-                });
-              }else{
-                $("#sidebar").stop().animate({
-                  marginTop: 0
-                });
-              };
-            });
+        $(function(){
+          var offset = $("#sidebar").offset();
+          var topPadding = 15;
+          $(window).scroll(function() {
+            if($("#sidebar").height() < $(window).height() && $(window).scrollTop() > offset.top){ /* LINEA MODIFICADA PARA NO ANIMAR SI EL SIDEBAR ES MAYOR AL TAMANO DE PANTALLA */
+              $("#sidebar").stop().animate({
+                marginTop: $(window).scrollTop() - offset.top + topPadding
+              });
+            }else{
+              $("#sidebar").stop().animate({
+                marginTop: 0
+              });
+            };
           });
+        });
         /////////////////////////////////////////////////////////////////////////////////////
 
         $("#seleccion_personaje").change(function(){
@@ -74,6 +74,9 @@
               // --- Nombre y clase---
               $("#ficha_personaje").append('<div id="datos_generales"><span class="letraMuyGrande negrita">'+json.nombre+'</span><br /><span class="letraGrande">'+json.clase+'</span><br /><br /></div>');
 
+              // --- Botones cambiar Atributos ---
+              $("#ficha_personaje").append('<button id="boton_modificar_atributo">Cambiar atributos</button><br /><div id="modificar_atributo" class="borde" style="display:none"><ul><li>FUERZA <button name="fu" id="subir">+</button><button id="bajar" name="fu">-</button></li><li>DESTREZA <button name="de" id="subir">+</button><button id="bajar" name="de">-</button></li><li>CARISMA <button name="ca" id="subir">+</button><button id="bajar" name="ca">-</button></li><li>INTELIGENCIA <button name="int" id="subir">+</button><button id="bajar" name="int">-</button></li></ul></div>');
+
               // --- Los Atributos ----
               $("#ficha_personaje").append('<div id="atributos"><span class="negrita letraGrande margenDerechoPeque">FU: <span class="sinNegrita">'+json.fuerza+'</span></span><span class="negrita letraGrande margenDerechoPeque">DE:<span class="sinNegrita">'+json.destreza+'</span></span><span class="negrita letraGrande margenDerechoPeque">CA:<span class="sinNegrita">'+json.carisma+'</span></span><span class="negrita letraGrande">IN:<span class="sinNegrita">'+json.inteligencia+'</span></span></div><br />');
 
@@ -90,7 +93,7 @@
               }
 
               // --- Las Habilidades ---
-              if(json.habilidad_nombre.length != 0){
+              if(json.habilidad_nombre != undefined && json.habilidad_nombre != ""){
                 $("#ficha_personaje").append('<h3>Habilidades</h3><ul>');
                 for(var i=0; i<json.habilidad_nombre.length; i++){
                   $("#ficha_personaje").append('<li class="negrita"><a href="extra/mostrar_ventana_busqueda.php?tabla=habilidades&nombre='+json.habilidad_nombre[i]+'" target="_blank">'+json.habilidad_nombre[i]+'</a>: '+json.habilidad_bono[i]+'</li>'); 
@@ -99,7 +102,7 @@
               }
 
               // --- Las Ventajas ---
-              if(json.mejora.length != 0){
+              if(json.mejora != undefined && json.mejora != ""){
                 $("#ficha_personaje").append('<h3>Mejoras</h3><ul>');
                 for(var i=0; i<json.mejora.length; i++){
                   $("#ficha_personaje").append('<li class="negrita"><a href="extra/mostrar_ventana_busqueda.php?tabla=mejoras&nombre='+json.mejora[i]+'" target="_blank">'+json.mejora[i]+'</a></li>'); 
@@ -108,7 +111,7 @@
               }
 
               // --- Las Tecnicas ---
-              if(json.tecnica.length != 0){
+              if(json.tecnica != undefined && json.tecnica != ""){
                 $("#ficha_personaje").append('<h3>Tecnicas</h3><ul>');
                 for(var i=0; i<json.tecnica.length; i++){
                   $("#ficha_personaje").append('<li class="negrita"><a href="extra/mostrar_ventana_busqueda.php?tabla=tecnicas&nombre='+json.tecnica[i]+'" target="_blank">'+json.tecnica[i]+'</a></li>'); 
@@ -116,13 +119,18 @@
                 $("#ficha_personaje").append('</ul>');
               }
 
-            });
+              // Activar ventana de modificar atributos
+              $("#boton_modificar_atributo").click(function(){
+                $("#modificar_atributo").toggle();
+              });
 
-        }
+            }); // Fin del done
 
-        });
+          } // Fin del if
 
-      });
+        }); // Fin del evento change que se activa al elegir personaje
+
+      }); // Fin del document ready
 
     </script>
 
