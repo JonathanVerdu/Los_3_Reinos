@@ -43,9 +43,10 @@
 
                 // Recogemos todos los datos anteriores
                 if (isset($_POST["nombre_pj"])){
+
                   // Datos de nuevo_personaje_1
                   $nombre = $_POST["nombre_pj"];
-                  $apellido = $_POST["apellido_pj"];
+                  $apellido = str_replace("_", " ", $_POST["apellido_pj"]); // cambiamos guiones por espacios para mostrar y guardar en BD definitivamente de esta forma
                   $edad = $_POST["edad_pj"];
                   $altura = $_POST["altura_pj"];
                   $peso = $_POST["peso_pj"];
@@ -78,7 +79,7 @@
                   	}
                   }
 
-                  // /////////////////////// Metemos las habilidades medias en sesion
+                  // Metemos las habilidades medias en sesion
                   $_SESSION["array_nombres_habilidades_medias"] = $array_nombres_habilidades_medias;
                   $_SESSION["array_habilidades_medias"] = $array_habilidades_medias;
 
@@ -101,7 +102,7 @@
                   	}
                   }
 
-                  // /////////////////////// Metemos las habilidades faciles en sesion
+                  // Metemos las habilidades faciles en sesion
                   $_SESSION["array_nombres_habilidades_faciles"] = $array_nombres_habilidades_faciles;
                   $_SESSION["array_habilidades_faciles"] = $array_habilidades_faciles;
 
@@ -122,15 +123,15 @@
                   	}
                   }
 
-                  // /////////////////////// Metemos las habilidades faciles en sesion
+                  // Metemos las habilidades en sesion
                   $_SESSION["array_nombre_habilidades"] = $array_nombre_habilidades;
                   $_SESSION["array_habilidades"] = $array_habilidades;
 
-                  // Ventajas
+                  // Metemos las Ventajas  en sesion
                   $array_ventajas = $_POST["ventajas"];
                   $_SESSION["array_ventajas"] = $array_ventajas;
 
-                  // Tecnicas
+                  // Metemos las Tecnicas en sesion
                   $array_tecnicas = $_POST["tecnicas"];
                   $_SESSION["array_tecnicas"] = $array_tecnicas;
                
@@ -140,9 +141,11 @@
 
             <div id="resumen_personaje">
 
+              <h1>RESUMEN DE TU PERSONAJE</h1><br />
+
               <div id="datos_generales">
                 <!-- Nombre del personaje -->
-                <span class='letraMuyGrande negrita'><?php echo "$nombre $apellido"; ?></span><br />
+                <span class='letraGrande negrita'><?php echo "$nombre $apellido"; ?></span><br />
                 <!-- Clase -->
                 <span class="letraGrande"><?php echo "$clase" ?></span><br /><br />
               </div>

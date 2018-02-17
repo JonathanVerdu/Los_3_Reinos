@@ -4,7 +4,7 @@
   include_once "../include/funciones.php"; 
   session_start();
 
-  $nombre = $_SESSION["nombre_pj"]." ".$_SESSION["apellido_pj"];
+  $nombre = $_SESSION["nombre_pj"]." ".str_replace("_"," ",$_SESSION["apellido_pj"]);
   $edad = $_SESSION["edad_pj"];
   $altura = $_SESSION["altura_pj"];
   $peso = $_SESSION["peso_pj"];
@@ -36,9 +36,28 @@
 
   $usuario = $res["ID"];
 
+  // Sabiendo la clase sacamos los máximos a los que puede subir
+  $sql = "SELECT * FROM clases WHERE nombre = '$clase'";
+  $res = $conexion->query($sql);
+  $fila = $res->fetch_array();
+  $max_fuerza = $fila["subir_fu"];
+  $max_destreza = $fila["subir_de"];
+  $max_carisma = $fila["subir_ca"];
+  $max_inteligencia = $fila["subir_in"];
+
   // Agregar personaje a la tabla "personajes"
   $sql = "INSERT INTO personajes(nombre, edad, altura, peso, raza, sexo, clase, usuario, exp, fuerza, destreza, carisma, inteligencia) VALUES ('$nombre', $edad, $altura, $peso, '$raza', '$sexo', '$clase', $usuario, $exp, $fu, $de, $ca, $in)";
   $res = $conexion->query($sql);
+
+  // Agregar estado de las subidas de atributos (actualmente a 0 por ser personaje recien creados) y sus máximos según la clase inicial escogida, a la tabla "relaciones_atributomax_personaje"
+  $sql = "INSERT INTO relaciones_atributomax_personaje VALUES ('$nombre', 'fu','0','$max_fuerza')";
+  $res = $conexion->query($sql);
+  $sql = "INSERT INTO relaciones_atributomax_personaje VALUES ('$nombre', 'de','0','$max_destreza')";
+  $res = $conexion->query($sql);
+  $sql = "INSERT INTO relaciones_atributomax_personaje VALUES ('$nombre', 'ca','0','$max_carisma')";
+  $res = $conexion->query($sql);
+  $sql = "INSERT INTO relaciones_atributomax_personaje VALUES ('$nombre', 'in','0','$max_inteligencia')";
+  $res = $conexion->query($sql);   
 
   // Agregar habilidades en la tabla "relaciones_habilidad_personaje"
   for($i=0; $i<count($array_nombres_habilidades_medias); $i++){
@@ -60,21 +79,21 @@
   	$res = $conexion->query($sql);
   }
 
-  // Agregar ventajas
+  // Agregar ventajas a la tabla "relaciones_mejora_personaje"
   for($i=0; $i<count($array_ventajas);$i++){
   	$ventaja = $array_ventajas[$i];
   	$sql = "INSERT INTO relaciones_mejora_personaje VALUES ('$nombre', '$ventaja')";
   	$res = $conexion->query($sql);
   }
 
-   // Agregar tecnicas
+   // Agregar tecnicas a la tabla "relaciones_tecnica_personaje"
   for($i=0; $i<count($array_tecnicas);$i++){
   	$tecnica = $array_tecnicas[$i];
   	$sql = "INSERT INTO relaciones_tecnica_personaje VALUES ('$nombre', '$tecnica')";
   	$res = $conexion->query($sql);
   }
 
-  // Agregar el personaje al usuario
+  // Agregar el personaje a la tabla "relaciones_usuario_personaje"
   $sql = "INSERT INTO relaciones_usuario_personaje VALUES ('$nombre', $usuario)";
   $res = $conexion->query($sql);
 

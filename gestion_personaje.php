@@ -72,13 +72,126 @@
               $("#ficha_personaje").html(" ");
 
               // --- Nombre y clase---
-              $("#ficha_personaje").append('<div id="datos_generales"><span class="letraMuyGrande negrita">'+json.nombre+'</span><br /><span class="letraGrande">'+json.clase+'</span><br /><br /></div>');
+              $("#ficha_personaje").append('<div id="datos_generales"><span class="letraGrande negrita">'+json.nombre+'</span><br /><span class="letraGrande">'+json.clase+'</span><br /><br /></div>');
 
-              // --- Botones cambiar Atributos ---
-              $("#ficha_personaje").append('<button id="boton_modificar_atributo">Cambiar atributos</button><br /><div id="modificar_atributo" class="borde" style="display:none"><ul><li>FUERZA <button name="fu" id="subir">+</button><button id="bajar" name="fu">-</button></li><li>DESTREZA <button name="de" id="subir">+</button><button id="bajar" name="de">-</button></li><li>CARISMA <button name="ca" id="subir">+</button><button id="bajar" name="ca">-</button></li><li>INTELIGENCIA <button name="int" id="subir">+</button><button id="bajar" name="int">-</button></li></ul></div>');
+              // --- Ventana cambiar Atributos ---
+              $("#ficha_personaje").append('<button id="boton_modificar_atributo">Cambiar atributos</button><br /><div id="modificar_atributo" class="borde" style="display:none"><ul><li>FUERZA :  <span id="fu_cambiar">0</span>&nbsp;<i class="fa fa-plus-circle subir" aria-hidden="true" name="fu"></i>&nbsp;<i class="fa fa-minus-circle bajar" aria-hidden="true" name="fu"></i><span id="fu_totales"> '+json.actualFuerza+' / '+json.maxFuerza+'</span></li><li>DESTREZA: <span id="de_cambiar">0</span>&nbsp;<i class="fa fa-plus-circle subir" aria-hidden="true" name="de"></i>&nbsp;<i class="fa fa-minus-circle bajar" aria-hidden="true" name="de"></i><span id="de_totales"> '+json.actualDestreza+' / '+json.maxDestreza+'</span></li><li>CARISMA: <span id="ca_cambiar">0</span>&nbsp;<i class="fa fa-plus-circle subir" aria-hidden="true" name="ca"></i>&nbsp;<i class="fa fa-minus-circle bajar" aria-hidden="true"  name="ca"></i><span id="ca_totales"> '+json.actualCarisma+' / '+json.maxCarisma+'</span></li><li>INTELIGENCIA: <span id="in_cambiar">0</span>&nbsp;<i class="fa fa-plus-circle subir" aria-hidden="true" name="in"></i>&nbsp;<i class="fa fa-minus-circle bajar" aria-hidden="true" name="in"></i><span id="in_totales"> '+json.actualInteligencia+' / '+json.maxInteligencia+'</span></li></ul><button id="aceptar_cambios">Aceptar cambios</div>');
+
+              // FUNCIONALIDADES DE LA VENTANA DE CAMBIAR ATRIBUTOS ////////////////////////////////////////////////////////
+
+                  // --- Botón subir atributo, funcionamiento
+                  $(".subir").click(function(){
+                    // Subir el contador del atributo que se va a subir
+                    $atributo_seleccionado = $(this).attr("name");
+                    if($atributo_seleccionado == "fu") $subida_por_hacer = $("#fu_cambiar").html();
+                    if($atributo_seleccionado == "de") $subida_por_hacer = $("#de_cambiar").html();
+                    if($atributo_seleccionado == "ca") $subida_por_hacer = $("#ca_cambiar").html();
+                    if($atributo_seleccionado == "in") $subida_por_hacer = $("#in_cambiar").html();
+                    // Comprobar si se puede pagar con EXP la subida
+                    $exp = $("#exp").html() - 3;
+                    if($exp >= 0){
+                      $subida_por_hacer++;
+                      // Comprobar si la subida va a superar el máximo de subidas que puedes
+                      if($atributo_seleccionado == "fu"){
+                        $atributo_actual = json.actualFuerza; 
+                        $atributo_maximo = json.maxFuerza;
+                      }
+                      if($atributo_seleccionado == "de"){
+                        $atributo_actual = json.actualDestreza; 
+                        $atributo_maximo = json.maxDestreza;
+                      }
+                      if($atributo_seleccionado == "ca"){
+                        $atributo_actual = json.actualCarisma; 
+                        $atributo_maximo = json.maxCarisma;
+                      }
+                      if($atributo_seleccionado == "in"){
+                        $atributo_actual = json.actualInteligencia; 
+                        $atributo_maximo = json.maxInteligencia;
+                      }
+                      $res_atributos = parseInt($atributo_actual) + parseInt($subida_por_hacer);
+                      if($res_atributos > parseInt($atributo_maximo)){
+                        alert("No puedes subir mas este atributo");
+                      }else{
+                        if($atributo_seleccionado == "fu") $("#fu_cambiar").html($subida_por_hacer);
+                        if($atributo_seleccionado == "de") $("#de_cambiar").html($subida_por_hacer);
+                        if($atributo_seleccionado == "ca") $("#ca_cambiar").html($subida_por_hacer);
+                        if($atributo_seleccionado == "in") $("#in_cambiar").html($subida_por_hacer);
+                        $("#exp").html($exp);
+                      }
+                    }else{
+                      alert("No tienes suficiente exp para subir un atributo (necesitas 3 puntos de EXP para ello)");
+                    }
+                  });
+
+                  // --- Botón bajar atributo, funcionamiento
+                  $(".bajar").click(function(){
+                    $atributo_seleccionado = $(this).attr("name");
+                    if($atributo_seleccionado == "fu") $subida_por_hacer = parseInt($("#fu_cambiar").html());
+                    if($atributo_seleccionado == "de") $subida_por_hacer = parseInt($("#de_cambiar").html());
+                    if($atributo_seleccionado == "ca") $subida_por_hacer = parseInt($("#ca_cambiar").html());
+                    if($atributo_seleccionado == "in") $subida_por_hacer = parseInt($("#in_cambiar").html());
+
+                    if($subida_por_hacer > 0){
+                      $exp = parseInt($("#exp").html()) + 3; 
+                      $("#exp").html($exp);
+                      $subida_por_hacer--;
+                      if($atributo_seleccionado == "fu") $("#fu_cambiar").html($subida_por_hacer);
+                      if($atributo_seleccionado == "de") $("#de_cambiar").html($subida_por_hacer);
+                      if($atributo_seleccionado == "ca") $("#ca_cambiar").html($subida_por_hacer);
+                      if($atributo_seleccionado == "in") $("#in_cambiar").html($subida_por_hacer);
+                    }else{ 
+                      alert("No puedes bajar mas de 0");
+                    }
+                  });
+
+                  // --- Aceptar cambios y pasarlos con AJAX
+                  $("#aceptar_cambios").click(function(){
+                    // Preguntar si queremos aplicar los cambios
+                    if(confirm("¿Quieres aplicar los cambios?, una vez aceptado los puntos de EXP y los cambios realizados se quedarán guardaos")){
+                      // Recogemos los datos que necesitamos
+                      $personaje = $("#seleccion_personaje").attr("selected",true).val();
+                      $cambio_fu = $("#fu_cambiar").html();
+                      $cambio_de = $("#de_cambiar").html();
+                      $cambio_ca = $("#ca_cambiar").html();
+                      $cambio_in = $("#in_cambiar").html();
+                      $exp = parseInt($("#exp").html());
+       
+                      // Función ajax de jquery con los datos para pasar /*
+                      $.ajax(
+                      {
+                        data: {"personaje" : $personaje, "exp" : $exp, "cambio_fu" : $cambio_fu, "cambio_de" : $cambio_de, "cambio_ca" : $cambio_ca, "cambio_in" : $cambio_in}, 
+                        type: "POST", 
+                        dataType: "json",
+                        url: "http://los3reinos.freeoda.com/extra/pasar_datos_atributos_a_bd.php" 
+                      })
+
+                      .done(function(json){
+                        // Si no hay error mostrar mensaje de todo hecho con éxito
+                        if(json.error == 0) alert("Cambios aplicados con éxito");
+
+                        // Cambiar los valores para dar el efecto de que se ha hecho el cambio al instante
+                        $("#fu_totales").html(" "+json.fu_actual+" / "+json.fu_max);
+                        $("#de_totales").html(" "+json.de_actual+" / "+json.de_max);
+                        $("#ca_totales").html(" "+json.ca_actual+" / "+json.ca_max);
+                        $("#in_totales").html(" "+json.in_actual+" / "+json.in_max);
+                        $("#atr_fu").html(json.fu_total);
+                        $("#atr_de").html(json.de_total);
+                        $("#atr_ca").html(json.ca_total);
+                        $("#atr_in").html(json.in_total);
+
+                        // Poner los contadores de subir atributo a 0
+                        $("#fu_cambiar").html("0");
+                        $("#de_cambiar").html("0");
+                        $("#ca_cambiar").html("0");
+                        $("#in_cambiar").html("0");
+                      });
+                    }
+                });
+
+              ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
               // --- Los Atributos ----
-              $("#ficha_personaje").append('<div id="atributos"><span class="negrita letraGrande margenDerechoPeque">FU: <span class="sinNegrita">'+json.fuerza+'</span></span><span class="negrita letraGrande margenDerechoPeque">DE:<span class="sinNegrita">'+json.destreza+'</span></span><span class="negrita letraGrande margenDerechoPeque">CA:<span class="sinNegrita">'+json.carisma+'</span></span><span class="negrita letraGrande">IN:<span class="sinNegrita">'+json.inteligencia+'</span></span></div><br />');
+              $("#ficha_personaje").append('<div id="atributos"><span class="negrita letraGrande margenDerechoPeque">FU: <span class="sinNegrita" id="atr_fu">'+json.fuerza+'</span></span><span class="negrita letraGrande margenDerechoPeque">DE:<span class="sinNegrita" id="atr_de">'+json.destreza+'</span></span><span class="negrita letraGrande margenDerechoPeque">CA:<span class="sinNegrita" id="atr_ca">'+json.carisma+'</span></span><span class="negrita letraGrande">IN:<span class="sinNegrita" id="atr_in">'+json.inteligencia+'</span></span></div><br />');
 
               // --- Los Datos Personales ---
               $("#ficha_personaje").append('<div id="datos_personales" class="bordeRedondeado"><ul><li>Raza: '+json.raza+'</li><li>Sexo: '+json.sexo+'</li><li>Edad: '+json.edad+'</li><li>Altura: '+json.altura+'</li><li>Peso: '+json.peso+'</li></ul></div><br />'); 
@@ -94,27 +207,45 @@
 
               // --- Las Habilidades ---
               if(json.habilidad_nombre != undefined && json.habilidad_nombre != ""){
-                $("#ficha_personaje").append('<h3>Habilidades</h3><ul>');
+                $("#ficha_personaje").append('<h3><i class="fa fa-bars" id="boton_habilidad" aria-hidden="true"></i> Habilidades</h3><ul>');
                 for(var i=0; i<json.habilidad_nombre.length; i++){
-                  $("#ficha_personaje").append('<li class="negrita"><a href="extra/mostrar_ventana_busqueda.php?tabla=habilidades&nombre='+json.habilidad_nombre[i]+'" target="_blank">'+json.habilidad_nombre[i]+'</a>: '+json.habilidad_bono[i]+'</li>'); 
+                  $tipo_coste = "Coste EXP: 3";
+                  // Comprobamos si la habilidad es fácil
+                  if(json.habilidad_facil_1 == json.habilidad_nombre[i]) $tipo_coste = "Coste EXP: 1";
+                  if(json.habilidad_facil_2 == json.habilidad_nombre[i]) $tipo_coste = "Coste EXP: 1";
+                  if(json.habilidad_facil_3 == json.habilidad_nombre[i]) $tipo_coste = "Coste EXP: 1";
+                  if(json.habilidad_facil_4 == json.habilidad_nombre[i]) $tipo_coste = "Coste EXP: 1";
+                  if(json.habilidad_facil_5 == json.habilidad_nombre[i]) $tipo_coste = "Coste EXP: 1";
+                  if(json.habilidad_facil_6 == json.habilidad_nombre[i]) $tipo_coste = "Coste EXP: 1";
+                  // Comprobamos si la habilidad es media
+                  if(json.habilidad_media_1 == json.habilidad_nombre[i]) $tipo_coste = "Coste EXP: 2";
+                  if(json.habilidad_media_2 == json.habilidad_nombre[i]) $tipo_coste = "Coste EXP: 2";
+                  if(json.habilidad_media_3 == json.habilidad_nombre[i]) $tipo_coste = "Coste EXP: 2";
+                  if(json.habilidad_media_4 == json.habilidad_nombre[i]) $tipo_coste = "Coste EXP: 2";
+                  if(json.habilidad_media_5 == json.habilidad_nombre[i]) $tipo_coste = "Coste EXP: 2";
+                  if(json.habilidad_media_6 == json.habilidad_nombre[i]) $tipo_coste = "Coste EXP: 2";
+
+                  if(json.habilidad_bono[i] != 0){
+                    $("#ficha_personaje").append('<li class="negrita habilidad"><a href="extra/mostrar_ventana_busqueda.php?tabla=habilidades&nombre='+json.habilidad_nombre[i]+'" target="_blank">'+json.habilidad_nombre[i]+'</a>: '+json.habilidad_bono[i]+'&nbsp;&nbsp;'+$tipo_coste+'&nbsp;&nbsp;<i class="fa fa-plus-circle bajar" aria-hidden="true" name="fu"></i></li>');
+                  }
                 }
                 $("#ficha_personaje").append('</ul><br />');
               }
 
               // --- Las Ventajas ---
               if(json.mejora != undefined && json.mejora != ""){
-                $("#ficha_personaje").append('<h3>Mejoras</h3><ul>');
+                $("#ficha_personaje").append('<h3><i class="fa fa-bars" id="boton_mejora" aria-hidden="true"></i> Mejoras</h3><ul>');
                 for(var i=0; i<json.mejora.length; i++){
-                  $("#ficha_personaje").append('<li class="negrita"><a href="extra/mostrar_ventana_busqueda.php?tabla=mejoras&nombre='+json.mejora[i]+'" target="_blank">'+json.mejora[i]+'</a></li>'); 
+                  $("#ficha_personaje").append('<li class="negrita mejora"><a href="extra/mostrar_ventana_busqueda.php?tabla=mejoras&nombre='+json.mejora[i]+'" target="_blank">'+json.mejora[i]+'</a></li>'); 
                 }
                 $("#ficha_personaje").append('</ul><br />');
               }
 
               // --- Las Tecnicas ---
               if(json.tecnica != undefined && json.tecnica != ""){
-                $("#ficha_personaje").append('<h3>Tecnicas</h3><ul>');
+                $("#ficha_personaje").append('<h3><i class="fa fa-bars" id="boton_tecnica" aria-hidden="true"></i> Tecnicas</h3><ul>');
                 for(var i=0; i<json.tecnica.length; i++){
-                  $("#ficha_personaje").append('<li class="negrita"><a href="extra/mostrar_ventana_busqueda.php?tabla=tecnicas&nombre='+json.tecnica[i]+'" target="_blank">'+json.tecnica[i]+'</a></li>'); 
+                  $("#ficha_personaje").append('<li class="negrita tecnica"><a href="extra/mostrar_ventana_busqueda.php?tabla=tecnicas&nombre='+json.tecnica[i]+'" target="_blank">'+json.tecnica[i]+'</a></li>'); 
                 }
                 $("#ficha_personaje").append('</ul>');
               }
@@ -122,6 +253,21 @@
               // Activar ventana de modificar atributos
               $("#boton_modificar_atributo").click(function(){
                 $("#modificar_atributo").toggle();
+              });
+
+              // Ocultar y mostrar tus habilidades
+              $("#boton_habilidad").click(function(){
+                $(".habilidad").toggle();
+              });
+
+              // Ocultar y mostrar tus mejoras
+              $("#boton_mejora").click(function(){
+                $(".mejora").toggle();
+              });
+
+              // Ocultar y mostrar tus tecnicas
+              $("#boton_tecnica").click(function(){
+                $(".tecnica").toggle();
               });
 
             }); // Fin del done

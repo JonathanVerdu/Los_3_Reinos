@@ -197,7 +197,7 @@
             echo "
               <div style='display:none;'>
                 <input type='text' name='nombre_pj' value=$nombre></input>
-                <input type='text' name='apellido_pj' value=$apellido></input>
+                <input type='text' name='apellido_pj' value=".str_replace(" ", "_", $apellido)."></input>
                 <input type='text' name='altura_pj' value=$altura></input>
                 <input type='text' name='peso_pj'value=$peso></input>
                 <input type='text' name='raza_pj'value=$raza></input>

@@ -71,12 +71,14 @@
                   $habilidad_facil_3 = $fila['habilidad_facil_3'];
                   $habilidad_facil_4 = $fila['habilidad_facil_4'];
                   $habilidad_facil_5 = $fila['habilidad_facil_5'];
+                  $habilidad_facil_6 = $fila['habilidad_facil_6'];
 
                   $habilidad_media_1 = $fila['habilidad_media_1'];
                   $habilidad_media_2 = $fila['habilidad_media_2'];
                   $habilidad_media_3 = $fila['habilidad_media_3'];
                   $habilidad_media_4 = $fila['habilidad_media_4'];
                   $habilidad_media_5 = $fila['habilidad_media_5'];
+                  $habilidad_media_6 = $fila['habilidad_media_6'];
 
                   $ventaja_1 = $fila['ventaja_1'];
                   $ventaja_2 = $fila['ventaja_2'];
@@ -91,6 +93,10 @@
                   $tecnica_4 = $fila['tecnica_4'];
                   $tecnica_5 = $fila['tecnica_5'];
                   $tecnica_6 = $fila['tecnica_6'];
+                  $tecnica_7 = $fila['tecnica_7'];
+                  $tecnica_8 = $fila['tecnica_8'];
+                  $tecnica_9 = $fila['tecnica_9'];
+                  $tecnica_10 = $fila['tecnica_10'];
 
                   $subir_fu = $fila['subir_fu'];
                   $subir_de = $fila['subir_de'];
@@ -168,6 +174,7 @@
                     if (isset($habilidad_facil_3)) echo ", <a href='extra/mostrar_ventana_busqueda.php?tabla=habilidades&nombre=$habilidad_facil_3' target='_blank'>$habilidad_facil_3</a>";
                     if (isset($habilidad_facil_4)) echo ", <a href='extra/mostrar_ventana_busqueda.php?tabla=habilidades&nombre=$habilidad_facil_4' target='_blank'>$habilidad_facil_4</a>";
                     if (isset($habilidad_facil_5)) echo ", <a href='extra/mostrar_ventana_busqueda.php?tabla=habilidades&nombre=$habilidad_facil_5' target='_blank'>$habilidad_facil_5</a>";
+                    if (isset($habilidad_facil_6)) echo ", <a href='extra/mostrar_ventana_busqueda.php?tabla=habilidades&nombre=$habilidad_facil_6' target='_blank'>$habilidad_facil_6</a>";
                   ?>
                   <br />
                   <span class='apartado_bd'>MEDIO: </span>
@@ -177,6 +184,7 @@
                     if (isset($habilidad_media_3)) echo ", <a href='extra/mostrar_ventana_busqueda.php?tabla=habilidades&nombre=$habilidad_media_3' target='_blank'>$habilidad_media_3</a>";
                     if (isset($habilidad_media_4)) echo ", <a href='extra/mostrar_ventana_busqueda.php?tabla=habilidades&nombre=$habilidad_media_4' target='_blank'>$habilidad_media_4</a>";
                     if (isset($habilidad_media_5)) echo ", <a href='extra/mostrar_ventana_busqueda.php?tabla=habilidades&nombre=$habilidad_media_5' target='_blank'>$habilidad_media_5</a>";
+                    if (isset($habilidad_media_6)) echo ", <a href='extra/mostrar_ventana_busqueda.php?tabla=habilidades&nombre=$habilidad_media_6' target='_blank'>$habilidad_media_6</a>";
                   ?><br /><br />
                   <!-- Mejoras disponibles -->
                   <h3>Mejoras disponibles </h3>
@@ -197,6 +205,10 @@
                     if (isset($tecnica_4)) echo ", <a href='extra/mostrar_ventana_busqueda.php?tabla=tecnicas&nombre=$tecnica_4' target='_blank'>$tecnica_4</a>";
                     if (isset($tecnica_5)) echo ", <a href='extra/mostrar_ventana_busqueda.php?tabla=tecnicas&nombre=$tecnica_5' target='_blank'>$tecnica_5</a>";
                     if (isset($tecnica_6)) echo ", <a href='extra/mostrar_ventana_busqueda.php?tabla=tecnicas&nombre=$tecnica_6' target='_blank'>$tecnica_6</a>";
+                    if (isset($tecnica_7)) echo ", <a href='extra/mostrar_ventana_busqueda.php?tabla=tecnicas&nombre=$tecnica_7' target='_blank'>$tecnica_7</a>";
+                    if (isset($tecnica_8)) echo ", <a href='extra/mostrar_ventana_busqueda.php?tabla=tecnicas&nombre=$tecnica_8' target='_blank'>$tecnica_8</a>";
+                    if (isset($tecnica_9)) echo ", <a href='extra/mostrar_ventana_busqueda.php?tabla=tecnicas&nombre=$tecnica_9' target='_blank'>$tecnica_9</a>";
+                    if (isset($tecnica_10)) echo ", <a href='extra/mostrar_ventana_busqueda.php?tabla=tecnicas&nombre=$tecnica_10' target='_blank'>$tecnica_10</a>";
                   ?><br /><br />
                   <h3>Especiales de clase </h3>
                   <!-- Cláseas -->
@@ -222,4 +234,4 @@
    <?php include 'include/footer.php' ?>
   
   </body>
-</html>
+</html>			

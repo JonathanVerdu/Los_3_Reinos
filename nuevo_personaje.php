@@ -92,7 +92,7 @@
 
               <div class="form-group">
                 <div class="col-lg-10">
-                  <input type="text" name='apellido' id='apellido' required pattern="[a-zA-Z]+[a-zA-Z ]+"  oninvalid="setCustomValidity('El campo apellido solo debe contener letras y no estár vacio')" oninput="setCustomValidity('')"  class="form-control" id="ejemplo_email_3"
+                  <input type="text" name='apellido' id='apellido' required pattern="[a-zA-Z]+[a-zA-Z ]+"  oninvalid="setCustomValidity('El campo apellido solo debe contener letras, espacios y no estar vacio')" oninput="setCustomValidity('')"  class="form-control" id="ejemplo_email_3"
                          placeholder="Apellido de tu personaje">
                 </div>
               </div>
