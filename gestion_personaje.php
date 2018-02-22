@@ -147,7 +147,7 @@
                   // --- Aceptar cambios y pasarlos con AJAX
                   $("#aceptar_cambios").click(function(){
                     // Preguntar si queremos aplicar los cambios
-                    if(confirm("¿Quieres aplicar los cambios?, una vez aceptado los puntos de EXP y los cambios realizados se quedarán guardaos")){
+                    if(confirm("¿Quieres aplicar los cambios?, una vez aceptado los puntos de EXP y los cambios realizados se quedarán guardados")){
                       // Recogemos los datos que necesitamos
                       $personaje = $("#seleccion_personaje").attr("selected",true).val();
                       $cambio_fu = $("#fu_cambiar").html();
@@ -209,27 +209,63 @@
               if(json.habilidad_nombre != undefined && json.habilidad_nombre != ""){
                 $("#ficha_personaje").append('<h3><i class="fa fa-bars" id="boton_habilidad" aria-hidden="true"></i> Habilidades</h3><ul>');
                 for(var i=0; i<json.habilidad_nombre.length; i++){
-                  $tipo_coste = "Coste EXP: 3";
+                  $tipo_coste = 3;
                   // Comprobamos si la habilidad es fácil
-                  if(json.habilidad_facil_1 == json.habilidad_nombre[i]) $tipo_coste = "Coste EXP: 1";
-                  if(json.habilidad_facil_2 == json.habilidad_nombre[i]) $tipo_coste = "Coste EXP: 1";
-                  if(json.habilidad_facil_3 == json.habilidad_nombre[i]) $tipo_coste = "Coste EXP: 1";
-                  if(json.habilidad_facil_4 == json.habilidad_nombre[i]) $tipo_coste = "Coste EXP: 1";
-                  if(json.habilidad_facil_5 == json.habilidad_nombre[i]) $tipo_coste = "Coste EXP: 1";
-                  if(json.habilidad_facil_6 == json.habilidad_nombre[i]) $tipo_coste = "Coste EXP: 1";
+                  if(json.habilidad_facil_1 == json.habilidad_nombre[i]) $tipo_coste = 1;
+                  if(json.habilidad_facil_2 == json.habilidad_nombre[i]) $tipo_coste = 1;
+                  if(json.habilidad_facil_3 == json.habilidad_nombre[i]) $tipo_coste = 1;
+                  if(json.habilidad_facil_4 == json.habilidad_nombre[i]) $tipo_coste = 1;
+                  if(json.habilidad_facil_5 == json.habilidad_nombre[i]) $tipo_coste = 1;
+                  if(json.habilidad_facil_6 == json.habilidad_nombre[i]) $tipo_coste = 1;
                   // Comprobamos si la habilidad es media
-                  if(json.habilidad_media_1 == json.habilidad_nombre[i]) $tipo_coste = "Coste EXP: 2";
-                  if(json.habilidad_media_2 == json.habilidad_nombre[i]) $tipo_coste = "Coste EXP: 2";
-                  if(json.habilidad_media_3 == json.habilidad_nombre[i]) $tipo_coste = "Coste EXP: 2";
-                  if(json.habilidad_media_4 == json.habilidad_nombre[i]) $tipo_coste = "Coste EXP: 2";
-                  if(json.habilidad_media_5 == json.habilidad_nombre[i]) $tipo_coste = "Coste EXP: 2";
-                  if(json.habilidad_media_6 == json.habilidad_nombre[i]) $tipo_coste = "Coste EXP: 2";
+                  if(json.habilidad_media_1 == json.habilidad_nombre[i]) $tipo_coste = 2;
+                  if(json.habilidad_media_2 == json.habilidad_nombre[i]) $tipo_coste = 2;
+                  if(json.habilidad_media_3 == json.habilidad_nombre[i]) $tipo_coste = 2;
+                  if(json.habilidad_media_4 == json.habilidad_nombre[i]) $tipo_coste = 2;
+                  if(json.habilidad_media_5 == json.habilidad_nombre[i]) $tipo_coste = 2;
+                  if(json.habilidad_media_6 == json.habilidad_nombre[i]) $tipo_coste = 2;
 
                   if(json.habilidad_bono[i] != 0){
-                    $("#ficha_personaje").append('<li class="negrita habilidad"><a href="extra/mostrar_ventana_busqueda.php?tabla=habilidades&nombre='+json.habilidad_nombre[i]+'" target="_blank">'+json.habilidad_nombre[i]+'</a>: '+json.habilidad_bono[i]+'&nbsp;&nbsp;'+$tipo_coste+'&nbsp;&nbsp;<i class="fa fa-plus-circle bajar" aria-hidden="true" name="fu"></i></li>');
-                  }
+                    $("#ficha_personaje").append('<li class="negrita habilidad"><a href="extra/mostrar_ventana_busqueda.php?tabla=habilidades&nombre='+json.habilidad_nombre[i]+'" target="_blank">'+json.habilidad_nombre[i]+'</a>: <span id="'+json.habilidad_nombre[i]+'">'+json.habilidad_bono[i]+'</span>&nbsp;&nbsp;Coste EXP: '+$tipo_coste+'&nbsp;&nbsp;<i class="fa fa-plus-circle subir_habilidad" aria-hidden="true" id="h'+json.habilidad_nombre[i]+'" name="'+$tipo_coste+'"></i></li>');
+                  } 
                 }
                 $("#ficha_personaje").append('</ul><br />');
+
+                // FUNCIONALIDADES DE LA VENTANA DE CAMBIAR ATRIBUTOS /////////////////////////////////////////////////
+
+                $(".subir_habilidad").click(function(){
+
+                	 $exp = parseInt($("#exp").html());
+                	 $coste = parseInt($(this).attr("name"));
+                	 if($exp - $coste >= 0){
+                	 	if(confirm("¿Quieres aplicar los cambios?, una vez aceptado los puntos de EXP y los cambios realizados se quedarán guardados")){
+                	 		// Parte visual automática ///////////////////////////////////////////////////
+
+                	 		// Convertir el nombre del id del botón al nombre del id de la habilidad
+                	 		$id_sin_cambiar = $(this).attr("id");
+                	 		$id_correcto = '#'+$id_sin_cambiar.substr(1);
+                	 		$bono_actual = $($id_correcto).html();
+                	 		$bono_correcto = parseInt($bono_actual) + 1;
+                	 		$($id_correcto).html($bono_correcto);
+                	 		
+                	 		// Restar la exp y cambiarla a el resultado correcto
+                	 		$("#exp").html(parseInt($exp) - $coste);
+
+                	 		/////////////////////////////////////////////////////////////////////////////
+
+                	 		// Parte de BD //////////////////////////////////////////////////////////////
+
+                	 		// !!!!!!!!!!!!!  POR HACEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEERRRRRRRRRRRRRR !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! //
+
+                	 		/////////////////////////////////////////////////////////////////////////////
+                	 	}
+                	 }else{
+                	 	alert("No tienes puntos de experiencia para subir esta habilidad");
+                	 }
+
+                });
+
+                ///////////////////////////////////////////////////////////////////////////////////////////////////////
               }
 
               // --- Las Ventajas ---
